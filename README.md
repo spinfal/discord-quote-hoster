@@ -1,5 +1,6 @@
 # Quote Hoster
 An easy way to upload and save your weird quotes and screenshots of your friends!
+**This is still a WIP**.
 
 ## How to download
 - Click the Download button at the top or open cmd and run the following command:
