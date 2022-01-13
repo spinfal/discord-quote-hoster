@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Discord Quotes</title>
+        <link rel="stylesheet" href="css/toast.css">
+        <link rel="stylesheet" href="css/main.css">
+    </head>
+    <body>
+        <div class="account-container">
+            <h2>Welcome</h2>
+            <p><%- loggedIn %></p>
+            <hr>
+            <div class="account-inputs">
+                <input type="text" name="username" autocomplete="off" placeholder="Username">
+                <input type="password" name="password" autocomplete="off" placeholder="Password">
+                <div style="display: inline;">
+                    <button>Login</button>
+                    <a href="/register"><button>Register</button></a>
+                </div>
+            </div>
+        </div>
+        <div id="toast-wrapper"></div>
+        <script type="module" src="js/main.js"></script>
+    </body>
+</html>

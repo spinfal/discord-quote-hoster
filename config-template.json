@@ -1,0 +1,11 @@
+{
+    "port": "443",
+    "domain": "https://yourdomain.com (NO TRAILING SLASH)",
+    "owner": "your-account-id",
+    "filetypes": [
+        "image/png",
+        "image/jpeg",
+        "image/jpg",
+        "image/webp"
+    ]
+}

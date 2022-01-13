@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Discord Quotes</title>
+        <link rel="stylesheet" href="css/main.css">
+    </head>
+    <body>
+        <div class="app">
+            <header class="quote-header">
+                <h1>Welcome, <%= username %> - <a href="/quotes/private">private quotes</a></h1>
+                <div class="quote-upload">
+                    <form method="POST" action="/api/upload" enctype="multipart/form-data">
+                        <input type="file" name="file" id="file" required hidden>
+                        <label for="file">Choose Image</label><br>
+                        <input type="text" name="quoted" placeholder="Users in this screenshot" required><br>
+                        <select name="private">
+                            <option value="false">Public</option>
+                            <option value="true">Private</option>
+                        </select><br>
+                        <input type="submit" value="Upload"><br>
+                    </form>
+                </div>
+                <input type="search" id="search" placeholder="Search...">
+            </header>
+            <div class="content">
+                <div class="quote-cards">
+                    <% for (var i = 0; i < quotes.length; i++) { %>
+                        <div class="quote-card" data-users="<%= quotes[i].quoted %>">
+                            <div class="quote-card-content">
+                                <div class="quote-card-content-image">
+                                   <a href="<%= quotes[i].path %>" target="_blank"><img src="<%= quotes[i].path %>" alt="<%= quotes[i].quoted %>"></a>
+                                </div>
+                                <div class="quote-card-content-quoted">
+                                    <span>Users: </span><%= quotes[i].quoted %>
+                                </div>
+                                <div class="quote-card-content-author">
+                                    <span>Author: </span><%= quotes[i].author %>
+                                </div>
+                                <div class="quote-card-content-date">
+                                    <span class="hovertext" data-hover="<%= quotes[i].date %>">Hover for Upload Date</span>
+                                    <!-- <span>Uploaded: </span><%= quotes[i].date %> -->
+                                </div>
+                            </div>
+                        </div>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </body>
+    <script type="module" src="js/quote-page.js"></script>
+</html>

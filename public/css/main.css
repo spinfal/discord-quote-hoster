@@ -1,0 +1,353 @@
+/* CSS made available by metalloriff @ https://metalloriff.github.io/city-fog -- i love you */
+
+:root {
+	/* Background colors */
+	--cf-bg0: #2c3946;
+	--cf-bg1: #364758;
+	--cf-bg2: #42566a;
+	--cf-bg3: #324151;
+	--cf-bg4: #232e38;
+
+	/* Accent colors */
+	--cf-acc0: #7bb1bd;
+	--cf-acc1: #bd7ba2;
+
+	/* Text colors */
+	--cf-txt0: #c3ccd4;
+	--cf-txt1: #ffffff;
+	--cf-txt2: #d8e1e9;
+    --cf-txt3: #c1c3c7;
+
+	/* Hover colors */
+	--cf-hover0: rgba(255, 255, 255, 0.09);
+	--cf-hover1: rgba(255, 255, 255, 0.18);
+	--cf-hover2: rgba(255, 255, 255, 0.075);
+
+	/* Border radii */
+	--cf-br0: 4px;
+	--cf-br1: 7px;
+	--cf-br2: 15px;
+
+	/* Rainbow accent color spectrum */
+	--cf-red: #be7d7d;
+	--cf-orange: #bd987e;
+	--cf-yellow: #c5c387;
+	--cf-green: #7bbe92;
+	--cf-blue: #7cb2bd;
+	--cf-purple: #9a88bf;
+	--cf-pink: #be7aa1;
+
+	/* Font families */
+	--cf-font0: Verdana, sans-serif;
+	--cf-font1: monospace;
+
+	/* Shadows */
+	--cf-shadow0: 0 0 7px rgba(0, 0, 0, 0.15);
+	--cf-shadow1: 0 0 12px rgba(0, 0, 0, 0.2);
+	--cf-shadow2: 0 0 15px rgba(0, 0, 0, 0.25);
+}
+
+body {
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    background-color: var(--cf-bg0);
+    color: var(--cf-txt0);
+    font-family: var(--cf-font0);
+    font-size: 16px;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.5;
+    margin: 0;
+    padding: 0;
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 9px;
+}
+/* Track */
+::-webkit-scrollbar-track {
+    border-radius: var(--cf-br1);
+    background: var(--cf-bg3);
+}
+/* Handle */
+::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background: var(--cf-bg4);
+}
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: var(--cf-hover2);
+}
+
+a {
+    color: var(--cf-acc0);
+    text-decoration: none;
+}
+a:visited {
+    color: var(--cf-acc0);
+}
+a:hover {
+    color: var(--cf-acc1);
+}
+
+/* login */
+.account-container {
+    top: 50%;
+    left: 50%;
+    width: 30em;
+    height: 18em;
+    margin-top: -9em;
+    margin-left: -15em;
+    border: none;
+    text-align: center;
+    border-radius: var(--cf-br2);
+    background-color: var(--cf-bg1);
+    position: fixed;
+}
+
+.account-container > hr {
+    margin-top: -0.3em;
+    margin-bottom: 1em;
+    border: none;
+    border-top: 1px solid var(--cf-bg0);
+}
+
+.account-inputs {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.account-inputs > input {
+    margin-bottom: 1em;
+    border-radius: var(--cf-br1);
+    background-color: var(--cf-bg4);
+    padding: 0.5em;
+    border: none;
+    color: var(--cf-txt1);
+    outline: none;
+    width: 20em;
+}
+
+.account-container > button,
+.account-inputs > div > button,
+.account-inputs > div > a > button {
+    margin-top: 1em;
+    border-radius: var(--cf-br1);
+    background-color: var(--cf-bg4);
+    padding: 0.5em;
+    border: none;
+    color: var(--cf-txt3);
+    outline: none;
+    width: 12em;
+    cursor: pointer;
+}
+
+/* quotes */
+.app > .quote-header {
+    display: flexbox;
+    flex-direction: row;
+    margin-top: 1em;
+    margin-left: 2em;
+    margin-bottom: 1em;
+    font-weight: bold;
+    color: var(--cf-txt1);
+}
+
+.app > .quote-header > [type="search"] {
+    margin-bottom: 0.60em;
+    border-radius: var(--cf-br1);
+    background-color: var(--cf-bg4);
+    padding: 0.5em;
+    border: none;
+    color: var(--cf-txt1);
+    outline: none;
+    width: 15em;
+}
+
+/* form */
+.app > .quote-header > .quote-upload > form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 20em;
+    margin-bottom: 3em;
+}
+
+.app > .quote-header > .quote-upload > form > [for="file"] {
+    margin-bottom: 0.60em;
+    border-radius: var(--cf-br1);
+    background-color: var(--cf-bg4);
+    padding: 0.5em;
+    border: none;
+    color: var(--cf-txt3);
+    cursor: pointer;
+}
+
+.app > .quote-header > .quote-upload > form > [name="file"],
+.app > .quote-header > .quote-upload > form > [name="quoted"],
+.app > .quote-header > .quote-upload > form > [name="private"],
+.app > .quote-header > .quote-upload > form > [type="submit"] {
+    margin-bottom: 0.60em;
+    border-radius: var(--cf-br1);
+    background-color: var(--cf-bg4);
+    padding: 0.5em;
+    border: none;
+    color: var(--cf-txt1);
+    outline: none;
+    width: 20em;
+}
+
+.app > .quote-header > .quote-upload > form > button {
+    border-radius: var(--cf-br1);
+    background-color: var(--cf-bg4);
+    padding: 0.5em;
+    border: none;
+    color: var(--cf-txt3);
+    outline: none;
+    width: 12em;
+    cursor: pointer;
+}
+
+/* cards */
+.app > .content > .quote-cards {
+    display: grid;
+    grid-template-columns: repeat(4, 25%);
+    grid-column-gap: 10px;
+    grid-gap: 1em;
+    margin-bottom: 3em;
+    padding-left: 3em;
+    padding-right: 3em;
+}
+
+.app > .content > .quote-cards > .quote-card {
+    border-radius: var(--cf-br1);
+    background-color: var(--cf-bg4);
+    padding: 0.5em;
+    border: none;
+    color: var(--cf-txt1);
+    outline: none;
+    width: 25em;
+    box-shadow: var(--cf-shadow1);
+    -webkit-box-shadow: var(--cf-shadow1);
+    -moz-box-shadow: var(--cf-shadow1);
+}
+
+.app > .content > .quote-cards > .quote-card > .quote-card-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.app > .content > .quote-cards > .quote-card > .quote-card-content > .quote-card-content-quoted > span,
+.app > .content > .quote-cards > .quote-card > .quote-card-content > .quote-card-content-author > span,
+.app > .content > .quote-cards > .quote-card > .quote-card-content > .quote-card-content-date > span {
+    font-family: var(--cf-font1);
+    color: var(--cf-purple);
+}
+
+.app > .content > .quote-cards > .quote-card > .quote-card-content > .quote-card-content-image {
+    max-height: 8em;
+    height: 10em;
+    max-width: 100%;
+    overflow: hidden;
+    border-radius: var(--cf-br1);
+    margin-bottom: 2em;
+}
+
+/* show date on hover */
+.hovertext {
+    position: relative;
+    border-bottom: 1px dotted black;
+}
+
+.hovertext:before {
+    content: attr(data-hover);
+    visibility: hidden;
+    opacity: 0;
+    width: 140px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 5px;
+    padding: 5px 0;
+    transition: opacity 0.3s ease-in-out;
+    position: absolute;
+    z-index: 1;
+    left: 0;
+    top: 110%;
+}
+
+.hovertext:hover:before {
+    opacity: 1;
+    visibility: visible;
+}
+
+@media (min-width: 320px) {
+    .app > .content > .quote-cards {
+        grid-template-columns: repeat(1, 50%);
+    }
+
+    .app > .content > .quote-cards > .quote-card {
+        width: 30vh;
+    }
+}
+@media (min-width: 345px) {
+    .app > .content > .quote-cards {
+        grid-template-columns: repeat(1, 50%);
+    }
+
+    .app > .content > .quote-cards > .quote-card {
+        width: 35vh;
+    }
+}
+@media (min-width: 375px) {
+    .app > .content > .quote-cards {
+        grid-template-columns: repeat(1, 50%);
+    }
+
+    .app > .content > .quote-cards > .quote-card {
+        width: 32vh;
+    }
+}
+@media (min-width: 768px) {
+    .app > .content > .quote-cards {
+        grid-template-columns: repeat(1, 50%);
+    }
+
+    .app > .content > .quote-cards > .quote-card {
+        width: 55vh;
+    }
+}
+@media (min-width: 1024px) {
+    .app > .content > .quote-cards {
+        grid-template-columns: repeat(2, 50%);
+    }
+
+    .app > .content > .quote-cards > .quote-card {
+        width: 45vh;
+    }
+}
+@media (min-width: 1440px) {
+    .app > .content > .quote-cards {
+        grid-template-columns: repeat(2, 50%);
+    }
+
+    .app > .content > .quote-cards > .quote-card {
+        width: 58vh;
+        height: 26vh;
+    }
+}
+@media (min-width: 1650px) {
+    .app > .content > .quote-cards {
+        grid-template-columns: repeat(4, 25%);
+    }
+    
+    .app > .content > .quote-cards > .quote-card {
+        width: 25em;
+    }    
+}
+
+/* fuck my life */
