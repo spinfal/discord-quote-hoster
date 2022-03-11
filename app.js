@@ -182,11 +182,11 @@ app.post('/api/upload', upload(), (req, res) => {
     if (UN?.id === uuid) {
         if (isPrivate === 'true') {
             req.files.file.mv(__dirname + `/public/private-content/${path}`, (err) => console.error(err));
-            UN.privateFiles.push({ "name": fileName, "quoted": req.body.quoted || 'Not provided', "date": new Date(parseInt(fileName.split('-')[0])), "path": `${domain}/private-content/${path}` });
+            UN.privateFiles.push({ "name": fileName, "quoted": req.body.quoted || 'Not provided', "date": new Date(parseInt(fileName.split('-')[0])), "path": `${domain}:${port}/private-content/${path}` });
             db.save();
         } else {
             req.files.file.mv(__dirname + `/public/${path}`, (err) => console.error(err));
-            files.append("files", { "name": fileName, "author": UN?.username || 'Unknown author', "quoted": req.body.quoted.htmlEscape() || 'Not provided', "date": new Date(parseInt(fileName.split('-')[0])), "path": `${domain}/imgs/${fileName}` });
+            files.append("files", { "name": fileName, "author": UN?.username || 'Unknown author', "quoted": req.body.quoted.htmlEscape() || 'Not provided', "date": new Date(parseInt(fileName.split('-')[0])), "path": `${domain}:${port}/imgs/${fileName}` });
             files.save();
         }
         // metadata.set(fileName, UN?.username);
