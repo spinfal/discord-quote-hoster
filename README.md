@@ -12,6 +12,7 @@ git clone https://github.com/spinfal/discord-quote-hoster.git
 ## How to run
 - Make sure you are in the project folder
 - Run `npm i` and your packages will install
+- Rename `config-template.json` to `config.json` and configure what you can
 - When that is done; run `npm start` (if you plan to make changes to this project, you may also run `nodemon app.js`)
 
-##### Made by spin <3 -- https://spin.tk/
+##### Made by spin <3 -- https://spin.rip/
