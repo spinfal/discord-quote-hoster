@@ -1,5 +1,9 @@
 "use strict";
 
+String.prototype.htmlEscape = function () {
+    return ('' + this).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
+};
+
 // modules
 const helmet = require('helmet');
 const express = require('express');
@@ -8,7 +12,7 @@ const editJsonFile = require("edit-json-file");
 const { v4: uuidv4 } = require('uuid');
 
 // variables
-const { port, domain, filetypes } = require('./config');
+const { port, domain, filetypes, owner, hasRan } = require('./config');
 const app = express();
 // const db = new JSONdb('data/accounts.json');
 // const users = db.get('users');
@@ -17,6 +21,7 @@ const app = express();
 const db = editJsonFile(`${__dirname}/data/accounts.json`);
 const files = editJsonFile(`${__dirname}/data/files.json`);
 const invites = editJsonFile(`${__dirname}/data/invites.json`);
+const configFile = editJsonFile(`${__dirname}/config.json`);
 
 // set views
 app.set('views', __dirname + '/views');
@@ -31,12 +36,12 @@ app.use('/imgs', express.static(__dirname + 'public/imgs'));
 
 // admin routes
 app.get('/bruh', (req, res) => {
-    if (getCookie(req.headers.cookie, 'uuid') !== config.owner) return res.redirect(403, '/');
+    if (getCookie(req.headers.cookie, 'uuid') !== owner) return res.redirect(403, '/');
     res.render('bruh');
 });
 
 app.get('/api/create/invites', (req, res) => {
-    if (getCookie(req.headers.cookie, 'uuid') !== config.owner) return res.redirect(403, '/');
+    if (getCookie(req.headers.cookie, 'uuid') !== owner) return res.redirect(403, '/');
     const newInvite = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
     invites.append('invites', newInvite);
     invites.save();
@@ -67,12 +72,12 @@ app.get('/quotes', (req, res) => {
     // const username = getCookie(req.headers.cookie, 'username');
     // const password = unescape(getCookie(req.headers.cookie, 'password'));
     const UN = db.get("users").find(u => u.id === uuid);
-    
+
     if (UN?.id === uuid) {
         let fileNames = [];
 
         files.get("files")?.forEach(data => {
-            fileNames.push({name: data.name, path: data.path, author: data.author, quoted: data.quoted, date: data.date});
+            fileNames.push({ name: data.name, path: data.path, author: data.author, quoted: data.quoted, date: data.date });
         });
 
         res.render('quotes', {
@@ -89,12 +94,12 @@ app.get('/quotes/private', (req, res) => {
     // const username = getCookie(req.headers.cookie, 'username');
     // const password = unescape(getCookie(req.headers.cookie, 'password'));
     const UN = db.get("users").find(u => u.id === uuid);
-    
+
     if (UN?.id === uuid) {
         let fileNames = [];
 
         UN.privateFiles?.forEach(data => {
-            fileNames.push({name: data.name, path: data.path, quoted: data.quoted, date: data.date});
+            fileNames.push({ name: data.name, path: data.path, quoted: data.quoted, date: data.date });
         });
 
         res.render('private-quotes', {
@@ -115,7 +120,7 @@ app.post('/api/login', express.json(), (req, res) => {
     const UN = db.get("users").find(u => u.username === username);
 
     if (UN?.username === username && UN?.password === password) {
-        res.cookie('uuid', UN.id, { maxAge: 9000000 });
+        res.cookie('uuid', UN.id, { maxAge: 9000000, httpOnly: true, sameSite: true });
         // res.cookie('username', UN.username, { maxAge: 9000000 });
         // res.cookie('password', UN.password, { maxAge: 9000000 });
         res.sendStatus(204);
@@ -126,7 +131,7 @@ app.post('/api/login', express.json(), (req, res) => {
 
 app.post('/api/register', express.json(), (req, res) => {
     const { username, password, invite } = req.body;
-    
+
     if (username === "" || password === "" || invite === "") return res.status(400).send('You are missing required fields');
     if (!/^[a-z0-9_-]{3,10}$/i.test(username)) return res.status(400).send('Username must be between 3 and 10 characters long and contain only letters, numbers, underscores and dashes.');
     if (!/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$/i.test(password)) return res.status(400).send('Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number and one special character.');
@@ -135,12 +140,13 @@ app.post('/api/register', express.json(), (req, res) => {
     const UN = db.get("users").find(u => u.username === username);
     if (UN?.username === username) return res.status(409).send('Username already exists');
 
-
+    const UUID = uuidv4();
     const newUser = {
-        id: uuidv4(),
+        id: UUID,
         username: username,
         password: password
     };
+    res.cookie('uuid', UUID, { maxAge: 9000000, httpOnly: true, sameSite: true });
 
     db.get("users").push(newUser);
     const arr = invites.get("invites");
@@ -152,7 +158,7 @@ app.post('/api/register', express.json(), (req, res) => {
     db.save();
     invites.save();
 
-    res.cookie('uuid', newUser.id, { maxAge: 9000000 });
+    res.cookie('uuid', newUser.id, { maxAge: 9000000, httpOnly: true, sameSite: true });
     // res.cookie('username', newUser.username, { maxAge: 9000000 });
     // res.cookie('password', newUser.password, { maxAge: 9000000 });
     res.sendStatus(204);
@@ -180,7 +186,7 @@ app.post('/api/upload', upload(), (req, res) => {
             db.save();
         } else {
             req.files.file.mv(__dirname + `/public/${path}`, (err) => console.error(err));
-            files.append("files", { "name": fileName, "author": UN?.username || 'Unknown author', "quoted": req.body.quoted || 'Not provided', "date": new Date(parseInt(fileName.split('-')[0])), "path": `${domain}/imgs/${fileName}` });
+            files.append("files", { "name": fileName, "author": UN?.username || 'Unknown author', "quoted": req.body.quoted.htmlEscape() || 'Not provided', "date": new Date(parseInt(fileName.split('-')[0])), "path": `${domain}/imgs/${fileName}` });
             files.save();
         }
         // metadata.set(fileName, UN?.username);
@@ -210,7 +216,15 @@ app.post('/api/upload', upload(), (req, res) => {
 
 app.listen(port, () => {
     console.clear();
-    console.log('Server is listening on port ' + port)
+    console.log('Server is listening on port ' + port);
+    if (hasRan === false) {
+        const newInvite = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+        invites.append('invites', newInvite);
+        invites.save();
+        console.log(`Your invite to create an account: ${newInvite}\nTo see the admin panel and make more invites, set the account ID in config.json then visit ${domain}:${port}/bruh`);
+        configFile.set('hasRan', true);
+        configFile.save();
+    }
 });
 
 
@@ -230,7 +244,7 @@ function getCookie(cookies, name) {
 //          {
 //              "name": fileName,
 //              "author": UN?.username || 'Unknown author',
-//              "quoted": req.body.quoted || 'Not provided',
+//              "quoted": req.body.quoted.htmlEscape() || 'Not provided',
 //              "date": new Date(parseInt(fileName.split('-')[0])),
 //              "path": `${domain}/imgs/${fileName}`
 //          }
